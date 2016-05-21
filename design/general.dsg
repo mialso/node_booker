@@ -1,0 +1,50 @@
+
+        [purpose]:
+* the app is to help to book node
+* the app is to help to find free node
+* to help find person to contact about node
+* to get notification when a node is freed
+* the app is to help in node management
+
+        [requirements]:
+    [functional]:
+* to view all nodes free and booked one
+* to book node
+* to free booked node
+* to get notification about book time expiration
+* to get notification about success booking
+
+    [implementation]:
+* to work on apache server ver=2.2.1
+* to show data in firefox browser ver=38+
+
+        [data model]:
+<node>
+    - name
+    - description
+    - hardware
+    - <reserve>
+<user>
+    - name
+    - email
+    - <role>
+<reserve>
+    - <user>
+    - <node>
+    - date_start
+    - date_end
+<role>
+    - role_name
+    - [allowed_actions]
+
+        [actions]:
+    <admin>
+node_add|update
+user_add|update
+    <owner>
+reserve_remove
+    <regular>
+reserve_add
+    <guest>
+nodes_show
+

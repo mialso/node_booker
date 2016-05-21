@@ -1,0 +1,25 @@
+body {
+    font-family: 'RobotoDraft', sans-serif;
+    display: flex;
+    flex-direction: column;
+    margin: 0px;
+}
+p {
+    margin: auto;
+}
+.border {
+    border: 1px solid black;
+}
+.header {
+    height: 50px;
+    display: flex;
+}
+.footer {
+    height: 50px;
+    display: flex;
+}
+.node {
+    display: flex;
+    flex-direction: row;
+    margin: 5px;
+}

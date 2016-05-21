@@ -1,0 +1,5 @@
+[Fri May 20 22:58:43.123924 2016] [cgi:error] [pid 1796] [client 127.0.0.1:59517] AH01215: (13)Permission denied: exec of '/home/mialso/projects/node_booker/www/cgi/get_data.cgi' failed, referer: http://localhost/
+[Fri May 20 22:58:43.124208 2016] [cgi:error] [pid 1796] [client 127.0.0.1:59517] End of script output before headers: get_data.cgi, referer: http://localhost/
+[Fri May 20 22:59:45.918830 2016] [cgi:error] [pid 1797] [client 127.0.0.1:59518] malformed header from script 'get_data.cgi': Bad header: hi, cgi, referer: http://localhost/
+[Sat May 21 21:07:02.628758 2016] [cgi:error] [pid 1662] [client 127.0.0.1:59754] AH01215: (13)Permission denied: exec of '/home/mialso/projects/node_booker/www/cgi/get_node_element.cgi' failed, referer: http://localhost/
+[Sat May 21 21:07:02.657804 2016] [cgi:error] [pid 1662] [client 127.0.0.1:59754] End of script output before headers: get_node_element.cgi, referer: http://localhost/
