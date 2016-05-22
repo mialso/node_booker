@@ -1,0 +1,30 @@
+            user module design doc
+        [purpose]:
+* user object is to provide different functionality to different users
+
+        [implementation]:
+    [authorization]:
+* every user has a role, which provides actions user can perform
+* every sensitive action(write) is performed with token
+    [authentication]:
+* the server holds password, which is used to create token
+* the client holds token, which is used to perform actions
+* on user creation the token is created on the server, and after on the client
+
+
+        [data model]:
+<user>
+    - name
+    - email
+    - password
+    - token
+    - <role>
+<role>
+    - role_name
+    - [allowed_actions]
+
+        [interface]:
+user_add
+user_remove
+user_log_in
+user_log_out

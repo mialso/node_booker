@@ -1,4 +1,4 @@
-
+            node_booker design doc
         [purpose]:
 * the app is to help to book node
 * the app is to help to find free node
@@ -14,9 +14,16 @@
 * to get notification about book time expiration
 * to get notification about success booking
 
-    [implementation]:
+        [implementation]:
 * to work on apache server ver=2.2.1
 * to show data in firefox browser ver=38+
+    [modules]:
+main
+    main window workflow
+user
+    user-related functionality
+node
+    node-related functionality
 
         [data model]:
 <node>
