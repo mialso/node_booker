@@ -21,8 +21,9 @@
         [data model]:
 <node>
     - name
-    - description
     - hardware
+    - boards
+    - description
     - <reserve>
 <user>
     - name

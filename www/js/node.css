@@ -11,8 +11,23 @@ p {
     border: 1px solid black;
 }
 .header {
-    height: 50px;
     display: flex;
+    flex-direction: column;
+}
+.header .title {
+    display: flex;
+}
+.header .usage {
+    display: flex;
+}
+.header .top_panel {
+    display: flex;
+    flex-direction: row;
+    margin: 5px;
+    padding: 5px;
+}
+.header .top_panel .user_bar {
+    width: 30%;
 }
 .footer {
     height: 50px;
@@ -22,4 +37,49 @@ p {
     display: flex;
     flex-direction: row;
     margin: 5px;
+    padding: 5px;
+}
+.node>div {
+    margin: 5px 2px 5px 2px;
+}
+.label {
+    border-radius: 2px;
+    background: blue;
+    color: white;
+}
+.reserve {
+    display: flex;
+    flex-direction: row;
+    width: 30%;
+}
+.reserve .status {
+    width: 30%;
+}
+.reserve .time {
+    display: flex;
+    flex-direction: row;
+    width: 70%;
+}
+.reserve .time .day_free {
+    width: 10%;
+    background-color: white;
+    border: 1px solid black;
+    margin: 2px;
+}
+.reserve .time .day_booked {
+    width: 10%;
+    margin: 2px;
+    background-color: red;
+}
+.name {
+    width: 10%;
+}
+.hardware {
+    width: 10%;
+}
+.boards {
+    width: 20%;
+}
+.description {
+    width: 30%;
 }

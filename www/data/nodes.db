@@ -1,1 +1,1 @@
-node one name;node one description;node one hardware|node two;some description;some hardware
+node one name;MKVIII;2 FSB,2 NCB;node one description|node two;MKVIII;2 FSB,2 NCB;some description

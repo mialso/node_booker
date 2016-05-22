@@ -2,6 +2,22 @@
 
 echo "Content-type: text/html"
 echo ""
-echo $(cat ../data/nodes.db)
+
+declare result
+data_path='../../data/nodes/'
+split="|"
+
+# read all data to variable, and split each node
+for node in $(ls "$data_path");do
+
+    # read node data
+    data=$(cat "$data_path$node")
+
+    # append node data + splitter to result
+    result="$result$data$split"
+done
+
+# remove last 'split' to avoid empty object
+echo ${result:0: -1}
 
 exit 0

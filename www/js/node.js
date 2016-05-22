@@ -20,9 +20,11 @@ function get_class_name(index) {
         case 0:
             return "name";
         case 1:
-            return "description";
-        case 2:
             return "hardware";
+        case 2:
+            return "boards";
+        case 3:
+            return "description";
     }
 }
 function node_elem_req(data) {

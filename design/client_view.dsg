@@ -1,0 +1,12 @@
+            client view design doc
+        [implementation]:
+* html pages with embedded js and css
+* page is split into modules, each module is split into elements, recursively
+
+        [data model]:
+    [modules]:
+<header>
+    - title
+    - instruction
+    - user_bar
+    - table_bar
