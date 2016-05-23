@@ -1,16 +1,22 @@
 var user = new Object();
-user.error = new Object();
-user.error.user_login_error = "user login error";
-user.error.email_enter_error = "incorrect email data";
+//user.error = new Object();
+//user.error.user_login_error = "user login error";
+//user.error.email_enter_error = "incorrect email data";
 function init_user() {
     // TODO provide from-in-browser storage logic
 
     // 
-    user.name = "guest";
-    user.role = "guest";
+    user.name = localStorage.getItem("user");
+    if (user.name = "guest") {
+    	user.role = "guest";
+    }
+    else {
+        // TODO update user-role according to name
+    }
     user_set_actions();
     user_update_view();
 }
+/*
 function user_log_in() {
     var email = document.getElementById("user_email_text").value;
     if (email.length < 5) {
@@ -36,6 +42,7 @@ function user_login_handler(data) {
     // update view
     user_update_view();
 }
+*/
 function user_update_view() {
     document.getElementById("user_name").innerHTML = "Hi, " + user.name;
 }

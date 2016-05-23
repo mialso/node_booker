@@ -51,14 +51,35 @@ function get_node_pop_up(id) {
         document.getElementById("pop_up_container").appendChild(node);
         document.getElementById("my_popup").style.display = "block";
         document.getElementById("pop_up_container").style.display = "block";
-        //node.setAttribute("style", "z-index: 25");
+        // update days to be actionable
+        var days = node.querySelectorAll(".day");
+        for (var i = 0; i < days.length; ++i) {
+            days[i].className += " edit";
+            days[i].onclick = function(event) {
+                console.log("day click");
+                set_days_booked(event.currentTarget, days);
+            };
+                
+        }
     };
 }
 function close_node_pop_up() {
     var node = document.getElementById("pop_up_container").firstChild;
+    // update days to be actionable
+    var days = node.querySelectorAll(".day");
+    for (var i = 0; i < days.length; ++i) {
+        days[i].className += " edit";
+    }
     document.getElementById("my_popup").style.display = "none";
+    push_node_to_list(node);
 }
 // rearrange all nodes according to reserve time
 function push_node_to_list(node) {
-
+    document.body.querySelector(".main").appendChild(node);
+}
+function set_days_booked(day) {
+    console.log("days booked = " + days[);
+        for (var i = 0; i < days.length; ++i) {
+            days[i].className = "day booked edit";
+        }
 }

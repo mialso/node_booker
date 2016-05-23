@@ -27,7 +27,7 @@ p {
     padding: 5px;
 }
 .header .top_panel .user_bar {
-    width: 30%;
+    width: 15%;
     display: flex;
     flex-direction: row;
 }
@@ -52,31 +52,30 @@ p {
     background: blue;
     color: white;
 }
+.status {
+    display:flex;
+    flex-direction: row;
+    width: 15%;
+}
 .reserve {
     display: flex;
     flex-direction: row;
-    width: 30%;
+    width: 25%;
 }
-.reserve .status {
-    display:flex;
-    flex-direction: row;
-    width: 30%;
-}
-.reserve .time {
-    display: flex;
-    flex-direction: row;
-    width: 70%;
-}
-.reserve .time .day_free {
+.reserve .free {
     width: 10%;
     background-color: white;
     border: 1px solid black;
     margin: 2px;
 }
-.reserve .time .day_booked {
+.reserve .booked {
     width: 10%;
     margin: 2px;
     background-color: red;
+}
+.reserve .edit:hover {
+    background-color: black;
+    cursor: pointer;
 }
 .name {
     width: 10%;
@@ -88,5 +87,5 @@ p {
     width: 20%;
 }
 .description {
-    width: 30%;
+    width: 20%;
 }
