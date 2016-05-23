@@ -7,7 +7,8 @@ function init_user() {
 
     // 
     user.name = localStorage.getItem("user");
-    if (user.name = "guest") {
+    console.log("user name = ", user.name);
+    if (user.name === "guest") {
     	user.role = "guest";
     }
     else {

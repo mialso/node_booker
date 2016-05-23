@@ -44,6 +44,9 @@ p {
     margin: 5px;
     padding: 5px;
 }
+.node:hover {
+    background: #cccccc;
+}
 .node>div {
     margin: 5px 2px 5px 2px;
 }
@@ -62,15 +65,14 @@ p {
     flex-direction: row;
     width: 25%;
 }
-.reserve .free {
+.reserve>div {
+}
+.reserve .day {
     width: 10%;
-    background-color: white;
-    border: 1px solid black;
+    border: 1px solid red;
     margin: 2px;
 }
 .reserve .booked {
-    width: 10%;
-    margin: 2px;
     background-color: red;
 }
 .reserve .edit:hover {

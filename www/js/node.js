@@ -40,35 +40,19 @@ function nodes_req(data) {
     nodes.forEach(function(elem, ind, arr) {
         node_fill_data(node_elem, elem);
         var new_node = node_elem.cloneNode(true);
-        new_node.firstChild.setAttribute("id", ind);
-        new_node.firstChild.querySelector(".edit_button").onclick = get_node_pop_up(ind);
+        new_node.firstChild.querySelector(".edit_button").onclick = reserve_edit;
+        new_node.firstChild.mls_node_id = ind;
         document.body.querySelector(".main").appendChild(new_node);
     });
-}
-function get_node_pop_up(id) {
-    return function() {
-        var node = document.getElementById(id);
-        document.getElementById("pop_up_container").appendChild(node);
-        document.getElementById("my_popup").style.display = "block";
-        document.getElementById("pop_up_container").style.display = "block";
-        // update days to be actionable
-        var days = node.querySelectorAll(".day");
-        for (var i = 0; i < days.length; ++i) {
-            days[i].className += " edit";
-            days[i].onclick = function(event) {
-                console.log("day click");
-                set_days_booked(event.currentTarget, days);
-            };
-                
-        }
-    };
 }
 function close_node_pop_up() {
     var node = document.getElementById("pop_up_container").firstChild;
     // update days to be actionable
     var days = node.querySelectorAll(".day");
     for (var i = 0; i < days.length; ++i) {
-        days[i].className += " edit";
+        var el = days[i];
+        el.classList.remove("edit");
+        el.onclick = null;
     }
     document.getElementById("my_popup").style.display = "none";
     push_node_to_list(node);
@@ -76,10 +60,4 @@ function close_node_pop_up() {
 // rearrange all nodes according to reserve time
 function push_node_to_list(node) {
     document.body.querySelector(".main").appendChild(node);
-}
-function set_days_booked(day) {
-    console.log("days booked = " + days[);
-        for (var i = 0; i < days.length; ++i) {
-            days[i].className = "day booked edit";
-        }
 }
