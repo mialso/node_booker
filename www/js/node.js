@@ -33,10 +33,14 @@ function get_class_name(index) {
 }
 // node_elem_request handler
 function node_elem_req_handler(data) {
+    // global object, defined here... UGHHH
     node_elem = node_elem_create(data);
     send_request("GET", "/actions/get_nodes.cgi", nodes_req_handler);
 }
 function nodes_req_handler(data) {
+    if (!data) {
+        return;
+    }
     var nodes = data.split("|");
     nodes.forEach(function(elem, ind, arr) {
         node_fill_data(node_elem.firstChild, elem);

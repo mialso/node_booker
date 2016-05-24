@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Content-type: text/html"
-echo ""
+#echo ""
 
 declare result
 data_path='../../data/nodes/'
@@ -18,6 +18,6 @@ for node in $(ls "$data_path");do
 done
 
 # remove last 'split' to avoid empty object
-echo ${result:0: -1}
+if [ -n $result ];then echo ${result:0: -1};fi
 
 exit 0
