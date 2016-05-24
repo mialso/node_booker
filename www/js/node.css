@@ -1,5 +1,5 @@
 body {
-    font-family: 'RobotoDraft', sans-serif;
+    font-family: 'Roboto', sans-serif;
     display: flex;
     flex-direction: column;
     margin: 0px;
@@ -16,15 +16,27 @@ p {
 }
 .header .title {
     display: flex;
+    height: 50px;
 }
 .header .usage {
     display: flex;
+    height: 100px;
 }
 .header .top_panel {
     display: flex;
     flex-direction: row;
     margin: 5px;
     padding: 5px;
+}
+.top_panel>div {
+    display: flex;
+}
+.header .top_panel .reserve {
+    display: flex;
+    flex-direction: row;
+}
+.month {
+    display: flex;
 }
 .header .top_panel .user_bar {
     width: 15%;
@@ -43,11 +55,13 @@ p {
     flex-direction: row;
     margin: 5px;
     padding: 5px;
+    font-size: 90%;
 }
-.node:hover {
+.main .node:hover {
     background: #cccccc;
 }
 .node>div {
+    display:flex;
     margin: 5px 2px 5px 2px;
 }
 .label {
@@ -68,15 +82,19 @@ p {
 .reserve>div {
 }
 .reserve .day {
+    display: flex;
+    align-items: center;
     width: 10%;
     border: 1px solid red;
     margin: 2px;
 }
 .reserve .booked {
     background-color: red;
+    color: white;
 }
 .reserve .edit:hover {
     background-color: black;
+    color: white;
     cursor: pointer;
 }
 .name {

@@ -73,3 +73,40 @@ function reserves_get() {
 function reserves_get_handler(data) {
     console.log("reserves_get data: " + data);
 }
+function days_update(days, date) {
+    var dayint = 1000*60*60*24;
+    var months = 1,
+        months_split = 10;
+    var date_prev = 0;
+    for (var i = 0; i < days.length; ++i) {
+        var date_n = new Date(date + dayint*i);
+        var date_num = date_n.getDate();
+        if (date_num < date_prev) {
+            // new month case
+            ++months; 
+            months_split = i;
+            console.log("months_split = " + months_split);
+        }
+        days[i].innerHTML = "<p>" + date_num + "</p>";
+        date_prev = date_num;
+    }
+    days_header_update(date, months, months_split);
+}
+function days_header_update(date, months, split) {
+    var dayint = 1000*60*60*24;
+    var months = document.querySelector(".top_panel .reserve").children;
+    if (months[0].innerHTML.length > 0) {
+        // already set, quit
+        return;
+    }
+    var month_date = new Date(date);
+    months[0].style.width = (split)*10 + "%";
+    months[0].innerHTML = "<p>" + month_date.toDateString().split(" ")[1] + "</p>";
+    if (split < 10) {
+        months[1].style.width = (10-split)*10 + "%";
+        months[1].style.borderLeft = "2px solid black";
+        //months[1].setAttribute("style", "border-left:'2px solid black';");
+        month_date = new Date(date + dayint*(split+1));
+        months[1].innerHTML = "<p>" + month_date.toDateString().split(" ")[1] + "</p>";
+    }
+}

@@ -1,11 +1,11 @@
-var node_elem;
 // main logic on start
 function on_load() {
     document.querySelector(".error_panel").style.visibility = "hidden";
     console.log("load event");
+    // init user logic from user.js
     init_user();
-    // init nodes logic
-    send_request("GET", "/actions/get_node_element.cgi", node_elem_req);
+    // init nodes logic from node.js
+    init_nodes();
 }
 document.addEventListener('DOMContentLoaded', on_load);
 
@@ -39,9 +39,11 @@ function send_request(method, uri, handler, data) {
         req.send();
     }
 }
+// TODO add user reports
 function report_error(err_text) {
     console.log("[ERROR]: " + err_text);
 }
+// returns parent of element by ccs class
 function get_parent(el, class_name) {
     var elem = el.parentElement;
     while (!elem.classList.contains(class_name)) {

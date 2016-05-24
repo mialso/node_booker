@@ -1,5 +1,5 @@
 function init_nodes() {
-
+    send_request("GET", "/actions/get_node_element.cgi", node_elem_req_handler);
 }
 // create node from template
 function node_elem_create(htmlString) {
@@ -11,11 +11,12 @@ function node_elem_create(htmlString) {
     }
     return node;
 }
-function node_fill_data(node_frag, data) {
+function node_fill_data(node, data) {
     var node_data = data.split(";");
+    // this function is defined in reserve.js
     node_data.forEach(function(elem, ind, arr) {
         var class_name = "." + get_class_name(ind) + "_data";
-        node_frag.querySelector(class_name).innerHTML = elem;
+        node.querySelector(class_name).innerHTML = elem;
     });
 }
 function get_class_name(index) {
@@ -31,17 +32,19 @@ function get_class_name(index) {
     }
 }
 // node_elem_request handler
-function node_elem_req(data) {
+function node_elem_req_handler(data) {
     node_elem = node_elem_create(data);
-    send_request("GET", "/actions/get_nodes.cgi", nodes_req);
+    send_request("GET", "/actions/get_nodes.cgi", nodes_req_handler);
 }
-function nodes_req(data) {
+function nodes_req_handler(data) {
     var nodes = data.split("|");
     nodes.forEach(function(elem, ind, arr) {
-        node_fill_data(node_elem, elem);
+        node_fill_data(node_elem.firstChild, elem);
         var new_node = node_elem.cloneNode(true);
-        new_node.firstChild.querySelector(".edit_button").onclick = reserve_edit;
+        //new_node.firstChild.querySelector(".edit_button").onclick = reserve_edit;
+        new_node.querySelector(".edit_button").onclick = reserve_edit;
         new_node.firstChild.mls_node_id = ind;
+        days_update(new_node.querySelectorAll(".day"), Date.now());
         document.body.querySelector(".main").appendChild(new_node);
     });
 }
