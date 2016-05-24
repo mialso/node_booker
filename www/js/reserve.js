@@ -1,3 +1,7 @@
+/*  TODO refactor all logic
+*   with respect to object -static and -dynamic data
+*   and also with DOM, CSSOM and 'real' data in mind
+*/
 function reserve_set(event) {
     var day = event.currentTarget;
     var node = get_parent(day, "node");
@@ -7,9 +11,13 @@ function reserve_set(event) {
     }
     node.mls_reserve = day.mls_id + 1;
     var days = day.parentElement.querySelectorAll(".day");
+    reserve_set_num(day.mls_id +1, days);
+    reserve_enable(node.querySelector(".reserve"));
+}
+function reserve_set_num(num, days) {
     for (var i = 0; i < days.length; ++i) {
         var el = days[i];
-        if (i <= day.mls_id) {
+        if (i < num) {
             if (!el.classList.contains("booked")) {
                 el.classList.toggle("booked");
             }
@@ -58,7 +66,9 @@ function reserve_close_pop_up(event) {
 function reserve_save(event) {
     var request = "";
     var node = get_parent(event.currentTarget, "node");
-    request = node.mls_node_id + ">" + "0" + ";" + node.mls_reserve;
+    var date_due = new Date();
+    var dayint = 1000*60*60*24;
+    request = node.mls_node_id + ">" + "0" + ";" + (date_due.getTime() + (dayint*node.mls_reserve));
     send_request("POST", "/actions/reserve_add.cgi", reserve_save_handler(node), request);
 }
 function reserve_save_handler(node) {
@@ -105,8 +115,36 @@ function days_header_update(date, months, split) {
     if (split < 10) {
         months[1].style.width = (10-split)*10 + "%";
         months[1].style.borderLeft = "2px solid black";
-        //months[1].setAttribute("style", "border-left:'2px solid black';");
         month_date = new Date(date + dayint*(split+1));
         months[1].innerHTML = "<p>" + month_date.toDateString().split(" ")[1] + "</p>";
     }
+}
+function reserves_get_data() {
+    send_request("GET", "/actions/reserves_get_all.cgi", reserves_data_handler);
+}
+function reserves_data_handler(data) {
+    data.split("|").forEach(function(elem, ind, arr) {
+        var reserve_data = elem.split(";");
+        var node = document.getElementById(reserve_data[0]);
+        var reserve = node.querySelector(".reserve");
+        var days_booked = days_booked_calc(reserve_data[2]);
+        console.log("days_booked = " + days_booked);
+        reserve_set_num(days_booked, reserve.querySelectorAll(".day"));
+        reserve_enable(reserve);
+    });
+}
+function reserve_enable(reserve) {
+    if (reserve.classList.contains("free")) {
+        reserve.classList.remove("free");
+    }
+    reserve.classList.add("booked");
+}
+/* TODO this function is simple but not correct
+*  possible solution is to refactor all logic to use days only
+*  to avoid every time translation from mseconds to days
+*/
+function days_booked_calc(date_due) {
+    var now_date = new Date();
+    var dayint = 1000*60*60*24;
+    return (date_due - now_date.getTime())/dayint;
 }

@@ -79,13 +79,16 @@ p {
     flex-direction: row;
     width: 25%;
 }
-.reserve>div {
+.free .day {
+    border: 1px solid green;
+}
+.booked .day {
+    border: 1px solid red;
 }
 .reserve .day {
     display: flex;
     align-items: center;
     width: 10%;
-    border: 1px solid red;
     margin: 2px;
 }
 .reserve .booked {

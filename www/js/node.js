@@ -44,9 +44,11 @@ function nodes_req_handler(data) {
         //new_node.firstChild.querySelector(".edit_button").onclick = reserve_edit;
         new_node.querySelector(".edit_button").onclick = reserve_edit;
         new_node.firstChild.mls_node_id = ind;
+        new_node.firstChild.setAttribute("id", ind);
         days_update(new_node.querySelectorAll(".day"), Date.now());
         document.body.querySelector(".main").appendChild(new_node);
     });
+    reserves_get_data();
 }
 function close_node_pop_up() {
     var node = document.getElementById("pop_up_container").firstChild;
