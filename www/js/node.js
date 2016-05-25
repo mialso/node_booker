@@ -1,6 +1,12 @@
 function init_nodes() {
     send_request("GET", "/actions/get_node_element.cgi", node_elem_req_handler);
 }
+// node_elem_request handler
+function node_elem_req_handler(data) {
+    // global object, defined here... UGHHH
+    node_elem = node_elem_create(data);
+    send_request("GET", "/actions/get_nodes.cgi", nodes_req_handler);
+}
 // create node from template
 function node_elem_create(htmlString) {
     var node = document.createDocumentFragment();
@@ -10,6 +16,23 @@ function node_elem_create(htmlString) {
         node.appendChild(temp.firstChild);
     }
     return node;
+}
+function nodes_req_handler(data) {
+    if (!data) {
+        return;
+    }
+    var nodes = data.split("|");
+    nodes.forEach(function(elem, ind, arr) {
+        node_fill_data(node_elem.firstChild, elem);
+        var new_node = node_elem.cloneNode(true);
+        //new_node.firstChild.querySelector(".edit_button").onclick = reserve_edit;
+        new_node.querySelector(".edit_button").onclick = reserve_edit;
+        new_node.firstChild.mls_node_id = ind;
+        new_node.firstChild.setAttribute("id", ind);
+        days_update(new_node.querySelectorAll(".day"), Date.now());
+        document.body.querySelector(".main").appendChild(new_node);
+    });
+    reserves_get_data();
 }
 function node_fill_data(node, data) {
     var node_data = data.split(";");
@@ -30,12 +53,6 @@ function get_class_name(index) {
         case 3:
             return "description";
     }
-}
-// node_elem_request handler
-function node_elem_req_handler(data) {
-    // global object, defined here... UGHHH
-    node_elem = node_elem_create(data);
-    send_request("GET", "/actions/get_nodes.cgi", nodes_req_handler);
 }
 function nodes_req_handler(data) {
     if (!data) {

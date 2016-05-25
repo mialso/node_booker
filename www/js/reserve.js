@@ -123,6 +123,11 @@ function reserves_get_data() {
     send_request("GET", "/actions/reserves_get_all.cgi", reserves_data_handler);
 }
 function reserves_data_handler(data) {
+    console.log("reserves data handler, data =" + data);
+    console.log("reserves data handler, data.length =" + data.length);
+    if (!data.length) {
+        return;
+    }
     data.split("|").forEach(function(elem, ind, arr) {
         var reserve_data = elem.split(";");
         var node = document.getElementById(reserve_data[0]);

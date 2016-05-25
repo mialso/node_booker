@@ -3,7 +3,8 @@
 echo "Content-type: text/html"
 echo ""
 
-declare result
+#declare result
+result=""
 data_path='../../data/reserves/'
 split="|"
 
@@ -18,6 +19,8 @@ for reserve in $(ls "$data_path");do
 done
 
 # remove last 'split' to avoid empty object
-echo ${result:0: -1}
+if [ -n "$result" ];then
+    echo ${result:0: -1}
+fi
 
 exit 0
