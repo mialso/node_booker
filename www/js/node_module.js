@@ -8,8 +8,16 @@ var Global = (function() {
 */
 function Node() {
     // static data
-    var domel_uri = "/actions/get_node_element.cgi";
-    var data_uri = "/actions/get_nodes.cgi";
+    var _domel_uri = "/actions/get_node_element.cgi";
+    var _data_uri = "/actions/get_nodes.cgi";
+    /*
+    this.__defineGetter__("domel_uri", function() {
+        return _domel_uri;
+    }
+    this.__defineGetter__("data_uri", function() {
+        return _data_uri;
+    }
+    */
 
     // objects server data
     var nodes[];
@@ -37,12 +45,10 @@ function Node() {
 
     // functions('class' operations/actions) 
 
-
     // interface
 
 };
 // create interface
 (function() {
     Node.__proto__.init = function() {};
-
 })();
