@@ -68,7 +68,7 @@ var Node = (function() {
 
         NET.send_request("GET", data_uri, parse_nodes_data(data));
     }
-    function init_Node() {
+    function init() {
         NET.send_request("GET", _domel_uri, parse_node_ui_data);
     }
 
@@ -80,6 +80,6 @@ var Node = (function() {
             }
             return instance;
         },
-        init: init_Node
+        init: init
     }
 })();
