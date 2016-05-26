@@ -8,13 +8,30 @@ function on_load() {
         "/actions/get_nodes.cgi",
         "|",
         ";",
+        "$",
         ["name", "hardware", "boards", "description"],
-        ".main"
     ]
-    app_data.node = new UI_element(node_data);
-    var node_ui_stack = [app_data.node];
+    var reserve_data = [
+        "/actions/get_reserve_element.cgi",
+        "/actions/reserves_get_all.cgi",
+        "|",
+        ";",
+        "$",
+        ["date_start", "date_end"],
+        "node_reserve"
+    ]
+    var Node = new UI_element(node_data, false);
+    var Reserve = new UI_element(reserve_data, Node.children);
+    var node_ui_stack = [Node, Reserve];
     SYNC_init(node_ui_stack, node_ui_stack_on_ready);
+    app_data.Node = Node;
+    app_data.Reserve = Reserve;
 }
-function node_ui_stack_on_ready() {
-    console.log("node_ui_stack_on_ready");
+function node_ui_stack_on_ready(arr) {
+    var parent_node = document.querySelector(".main");
+    for (var i = 0; i < arr.length; ++i) {
+        console.log("on_ready, i = " + i);
+        arr[i].add_to_parent(parent_node);
+        parent_node = arr[i];
+    }
 }

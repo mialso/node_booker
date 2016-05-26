@@ -15,7 +15,7 @@ for reserve in $(ls "$data_path");do
     data=$(cat "$data_path$reserve")
 
     # append node data + splitter to result
-    result="$result$reserve;$data$split"
+    result="$result$reserve\$$data$split"
 done
 
 # remove last 'split' to avoid empty object
