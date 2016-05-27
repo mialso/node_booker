@@ -1,6 +1,6 @@
 // service to handle all requests
-var NET = {
-    send_request: function (method, uri, handler, data) {
+function NET() {
+    this.send_request = function (method, uri, handler, data) {
         var req;
         if (window.XMLHttpRequest) {
             req = new XMLHttpRequest();

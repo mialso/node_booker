@@ -8,7 +8,7 @@ function SYNC_init(elements, on_ready) {
         }
     };
     elements.forEach(function(elem, ind, arr) {
-        elem.ready(ready_callback);
+        elem.on_ready(ready_callback);
         elem.init();
     });
 };
