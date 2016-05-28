@@ -5,31 +5,92 @@ var Reserve = {
     out_splitter: "|",          // in nodes array
     in_splitter: ";",       // in node data array
     parent_splitter: "$",
-    class_names: [],
+    //class_names: [],
+
+    // children data
+    children: ["action_button"],
 
     // parent data
     parent_container: "node_reserve",
 
+    // state data
+    default_state: "view",
+    states: [
+        // children states first
+        // states of child 1
+        [
+            // state 1
+            {
+            name: "view",
+            parent_state: [],
+            classes: ["edit"],
+            actions: {
+                on_click: undefined, 
+                },
+            },
+            // state 2
+        ],
+    ],
+    module_states: [
+        // module element states
+            // state 1
+            {
+            name: "view",
+            children_states: ["view"],
+            classes: ["reserve"],
+            actions: {
+                on_click: function(domel) {
+                    return function(event) {
+                    if (event.target.className == "edit_button") {
+                        console.log("button click")
+                        //event.mls_edit = "edit";
+                        domel.state = "edit";
+                    }
+                    };
+                    },
+                },
+            },
+            {
+            name: "edit",
+            children_states: ["view"],
+            classes: ["reserve", "edit"],
+            actions: {
+                on_click: function(domel) {
+                    return function(event) {
+                    if (event.target.className == "edit_button") {
+                        console.log("button click")
+                        event.mls_edit = "edit";
+                        domel.state = "view";
+                    }
+                    };
+                    },
+                },
+            },
+            // state 2
+    ],
+
     // handlers
-    data_push: function(class_names, domel_proto) {
+    simple_handler: function(event) {
+        console.log("on_click habndler");
+    },
+
+    data_push: function(domel_proto) {
         var now_date = new Date();
         var dayint = 1000*60*60*24;
-        now_date = now_date.getTime() - (3*dayint);
+        now_date = now_date.getTime() - dayint;
+        domel_proto.querySelector(".calendar").classList.remove("free");
+        domel_proto.querySelector(".calendar").classList.add("booked");
         return function(elem, ind, arr) {
             if (ind === 1) {
                 var days = (elem - now_date)/dayint;
                 var day_elems = domel_proto.querySelectorAll(".day");
-                console.log("data_push day_elems = " + day_elems.toString());
                 for (var i = 0; i < day_elems.length; ++i) {
                     if (i < days) {
-                            console.log("adding booked...");
                         if (!day_elems[i].classList.contains("booked")) {
-                            console.log("adding booked...");
                             day_elems[i].classList.add("booked");
                         }
                     }
                     else {
-                            console.log("removing booked...");
                         if (day_elems[i].classList.contains("booked")) {
                             day_elems[i].classList.remove("booked");
                         }

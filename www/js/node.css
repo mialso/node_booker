@@ -65,46 +65,49 @@ p {
     margin: 5px 2px 5px 2px;
 }
 .label {
-    border-radius: 2px;
+    border-radius: 5px;
+    padding: 3px;
     background: blue;
     color: white;
 }
 .node_reserve {
-    display: flex;
     flex-direction: row;
     width: 40%;
+}
+.reserve {
+    display:flex;
+    flex-direction: row;
+    width: 100%;
 }
 .status {
     display:flex;
     flex-direction: row;
     width: 35%;
 }
+.calendar {
+    display:flex;
+    flex-direction: row;
+    width: 65%;
+}
+.calendar .day {
+    display: flex;
+    width: 10%;
+    margin: 2px;
+}
+.calendar .booked {
+    background-color: red;
+    color: white;
+}
+.calendar .edit:hover {
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
 .free .day {
     border: 1px solid green;
 }
 .booked .day {
     border: 1px solid red;
-}
-.reserve {
-    display:flex;
-    flex-direction: row;
-    width: 65%;
-
-}
-.reserve .day {
-    display: flex;
-    align-items: center;
-    width: 10%;
-    margin: 2px;
-}
-.reserve .booked {
-    background-color: red;
-    color: white;
-}
-.reserve .edit:hover {
-    background-color: black;
-    color: white;
-    cursor: pointer;
 }
 .name {
     width: 10%;

@@ -3,9 +3,11 @@ document.addEventListener('DOMContentLoaded', on_load);
 //var app_data = new Object;
 function on_load() {
 
+
+    document.querySelector(".error_panel").style.visibility = "hidden";
     // init UI
-    var node = new UI_element(Node, false);
-    var reserve = new UI_element(Reserve, Node.children);
+    var node = new UI_module(Node, false);
+    var reserve = new UI_module(Reserve, Node.children);
     var node_ui_stack = [node, reserve];
     SYNC_init(node_ui_stack, node_ui_stack_on_ready);
     //app_data.node = node;
