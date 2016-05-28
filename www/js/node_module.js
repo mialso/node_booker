@@ -54,7 +54,8 @@ var Node = {
     // handlers
     data_push: function(domel_proto) {
         return function(elem, ind, arr) {
-            domel_proto.firstChild.children[ind+1].children[0].innerHTML = elem;
+            //domel_proto.firstChild.children[ind+1].children[0].innerHTML = elem;
+            domel_proto.children[ind+1].children[0].innerHTML = elem;
         };
     },
     fragment_update: undefined,

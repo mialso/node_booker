@@ -42,8 +42,6 @@ var Reserve = {
                 on_click: function(domel) {
                     return function(event) {
                     if (event.target.className == "edit_button") {
-                        console.log("button click")
-                        //event.mls_edit = "edit";
                         domel.state = "edit";
                     }
                     };
@@ -58,8 +56,6 @@ var Reserve = {
                 on_click: function(domel) {
                     return function(event) {
                     if (event.target.className == "edit_button") {
-                        console.log("button click")
-                        event.mls_edit = "edit";
                         domel.state = "view";
                     }
                     };
@@ -70,10 +66,6 @@ var Reserve = {
     ],
 
     // handlers
-    simple_handler: function(event) {
-        console.log("on_click habndler");
-    },
-
     data_push: function(domel_proto) {
         var now_date = new Date();
         var dayint = 1000*60*60*24;
@@ -82,6 +74,11 @@ var Reserve = {
         domel_proto.querySelector(".calendar").classList.add("booked");
         return function(elem, ind, arr) {
             if (ind === 1) {
+                if (now_date > elem) {
+                    console.log("old reserve");
+                    // TODO remove reserve and clean up all
+                    elem = now_date;
+                }
                 var days = (elem - now_date)/dayint;
                 var day_elems = domel_proto.querySelectorAll(".day");
                 for (var i = 0; i < day_elems.length; ++i) {

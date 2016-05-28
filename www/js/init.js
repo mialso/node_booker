@@ -5,6 +5,8 @@ function on_load() {
 
 
     document.querySelector(".error_panel").style.visibility = "hidden";
+    // init user
+
     // init UI
     var node = new UI_module(Node, false);
     var reserve = new UI_module(Reserve, Node.children);
