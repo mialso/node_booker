@@ -1,155 +1,145 @@
-/*  TODO refactor all logic
-*   with respect to object -static and -dynamic data
-*   and also with DOM, CSSOM and 'real' data in mind
-*/
-function reserve_set(event) {
-    var day = event.currentTarget;
-    var node = get_parent(day, "node");
-    if (!node) {
-        report_error("reserve_set() failed to find node");
-        return;
+(function() {
+    if (typeof app == 'undefined') {
+        app = new Object;
     }
-    node.mls_reserve = day.mls_id + 1;
-    var days = day.parentElement.querySelectorAll(".day");
-    reserve_set_num(day.mls_id +1, days);
-    reserve_enable(node.querySelector(".reserve"));
-}
-function reserve_set_num(num, days) {
-    for (var i = 0; i < days.length; ++i) {
-        var el = days[i];
-        if (i < num) {
-            if (!el.classList.contains("booked")) {
-                el.classList.toggle("booked");
-            }
-        }
-        else {
-            if (el.classList.contains("booked")) {
-                el.classList.toggle("booked");
-            }
-        }
-    }
-}
-function reserve_edit(event) {
-    var node = event.currentTarget.parentElement.parentElement;
     
-    document.getElementById("my_popup").style.display = "block";
-    document.getElementById("my_popup").onclick = reserve_close_pop_up;
-    document.getElementById("pop_up_container").appendChild(node);
-    document.getElementById("pop_up_container").style.display = "block";
-    // update days to be actionable
-    var days = node.querySelectorAll(".day");
-    for (var i = 0; i < days.length; ++i) {
-        days[i].classList.add("edit");
-        days[i].mls_id = i;
-        days[i].onclick = reserve_set;
-    }
-    // update action button
-    node.querySelector(".edit_button").onclick = reserve_save;
-    node.querySelector(".edit_button").innerHTML = "save";
-}
-function reserve_close_pop_up(event) {
-    var node = document.getElementById("pop_up_container").firstChild;
-    // update days to be not actionable
-    var days = node.querySelectorAll(".day");
-    for (var i = 0; i < days.length; ++i) {
-        var el = days[i];
-        el.classList.remove("edit");
-        el.onclick = null;
-    }
-    var close_link = document.getElementById("my_popup");
-    close_link.style.display = "none";
-    close_link.onclick = null;
-    node.querySelector(".edit_button").innerHTML = "edit";
-    node.querySelector(".edit_button").onclick = reserve_edit;
-    push_node_to_list(node);
-}
-function reserve_save(event) {
-    var request = "";
-    var node = get_parent(event.currentTarget, "node");
-    var date_due = new Date();
-    var dayint = 1000*60*60*24;
-    request = node.mls_node_id + ">" + "0" + ";" + (date_due.getTime() + (dayint*node.mls_reserve));
-    send_request("POST", "/actions/reserve_add.cgi", reserve_save_handler(node), request);
-}
-function reserve_save_handler(node) {
-    return function(data) {
-        console.log("reserve_save_handler data = " + data);
-        node.querySelector(".edit_button").innerHTML = data;
-    }
-}
-function reserves_get() {
-    send_request("GET", "/actions/resrves_get.cgi", reserves_get_handler);
-}
-function reserves_get_handler(data) {
-    console.log("reserves_get data: " + data);
-}
-function days_update(days, date) {
-    var dayint = 1000*60*60*24;
-    var months = 1,
-        months_split = 10;
-    var date_prev = 0;
-    for (var i = 0; i < days.length; ++i) {
-        var date_n = new Date(date + dayint*i);
-        var date_num = date_n.getDate();
-        if (date_num < date_prev) {
-            // new month case
-            ++months; 
-            months_split = i;
-            console.log("months_split = " + months_split);
-        }
-        days[i].innerHTML = "<p>" + date_num + "</p>";
-        date_prev = date_num;
-    }
-    days_header_update(date, months, months_split);
-}
-function days_header_update(date, months, split) {
-    var dayint = 1000*60*60*24;
-    var months = document.querySelector(".top_panel .reserve").children;
-    if (months[0].innerHTML.length > 0) {
-        // already set, quit
+    var module = "reserve";
+    if (app.hasOwnProperty(module)) {
+        console.log("[ERROR]: '" +module+"' module load error: already loaded");
         return;
     }
-    var month_date = new Date(date);
-    months[0].style.width = (split)*10 + "%";
-    months[0].innerHTML = "<p>" + month_date.toDateString().split(" ")[1] + "</p>";
-    if (split < 10) {
-        months[1].style.width = (10-split)*10 + "%";
-        months[1].style.borderLeft = "2px solid black";
-        month_date = new Date(date + dayint*(split+1));
-        months[1].innerHTML = "<p>" + month_date.toDateString().split(" ")[1] + "</p>";
+    var Reserve = new Object;
+    app[module] = (function() {
+        Reserve.__defineGetter__("glob", function() {
+            return Reserve_glob;
+        });
+        // expose interface
+        Reserve.init = init;
+        return Reserve;
+    })();
+    var Reserve_glob = {
+        // static data
+        module_name: "reserve",
+        domel_uri: "/actions/get_reserve_element.cgi",
+        data_uri: "/actions/reserves_get_all.cgi",
+        out_splitter: "|",          // in nodes array
+        in_splitter: ";",       // in node data array
+        parent_splitter: "$",
+        //class_names: [],
+    
+        // children data
+        children: ["action_button"],
+    
+        // parent data
+        parent_container: "node_reserve",
+    
+        // state data
+        default_state: "view",
+        states: [
+            // children states first
+            // states of child 1
+            [
+                // state 1
+                {
+                name: "view",
+                parent_state: [],
+                classes: ["edit"],
+                actions: {
+                    on_click: undefined, 
+                    },
+                },
+                // state 2
+            ],
+        ],
+        module_states: [
+            // module element states
+                // state 1
+                {
+                name: "view",
+                children_states: ["view"],
+                classes: ["reserve"],
+                actions: {
+                    on_click: function(domel) {
+                        return function(event) {
+                        if (event.target.className == "edit_button") {
+                            domel.state = "edit";
+                        }
+                        };
+                        },
+                    },
+                },
+                {
+                name: "edit",
+                children_states: ["view"],
+                classes: ["reserve", "edit"],
+                actions: {
+                    on_click: function(domel) {
+                        return function(event) {
+                        if (event.target.className == "edit_button") {
+                            domel.state = "view";
+                        }
+                        };
+                        },
+                    },
+                },
+                // state 2
+        ],
+    
+        // handlers
+        data_push: function(domel_proto) {
+            var now_date = new Date();
+            var dayint = 1000*60*60*24;
+            now_date = now_date.getTime() - dayint;
+            domel_proto.querySelector(".calendar").classList.remove("free");
+            domel_proto.querySelector(".calendar").classList.add("booked");
+            return function(elem, ind, arr) {
+                if (ind === 1) {
+                    if (now_date > elem) {
+                        app.log.error(module, "data_push(): reserve date is lower than 'now'");
+                        // TODO remove reserve and clean up all
+                        elem = now_date;
+                    }
+                    var days = (elem - now_date)/dayint;
+                    var day_elems = domel_proto.querySelectorAll(".day");
+                    for (var i = 0; i < day_elems.length; ++i) {
+                        if (i < days) {
+                            if (!day_elems[i].classList.contains("booked")) {
+                                day_elems[i].classList.add("booked");
+                            }
+                        }
+                        else {
+                            if (day_elems[i].classList.contains("booked")) {
+                                day_elems[i].classList.remove("booked");
+                            }
+                        }
+                    }
+                }
+            };
+        },
+        fragment_update: function(fragment) {
+            var dayint = 1000*60*60*24;
+            var months = 1,
+                months_split = 10;
+            var date_prev = 0;
+            var days = fragment.querySelectorAll(".day");
+            var date = new Date();
+            date = date.getTime();
+            for (var i = 0; i < days.length; ++i) {
+                var date_n = new Date(date + dayint*i);
+                var date_num = date_n.getDate();
+                if (date_num < date_prev) {
+                    // new month case
+                    ++months; 
+                    months_split = i;
+                    console.log("months_split = " + months_split);
+                }
+                days[i].innerHTML = "<p>" + date_num + "</p>";
+                date_prev = date_num;
+            }
+        },
+    };
+    function init(parent_el) {
+        //Reserve.ui = new app.ui.create(Reserve_glob, parent_el);
+        Reserve.ui = new app.ui(Reserve_glob, parent_el);
     }
-}
-function reserves_get_data() {
-    send_request("GET", "/actions/reserves_get_all.cgi", reserves_data_handler);
-}
-function reserves_data_handler(data) {
-    console.log("reserves data handler, data =" + data);
-    console.log("reserves data handler, data.length =" + data.length);
-    if (!data.length) {
-        return;
-    }
-    data.split("|").forEach(function(elem, ind, arr) {
-        var reserve_data = elem.split(";");
-        var node = document.getElementById(reserve_data[0]);
-        var reserve = node.querySelector(".reserve");
-        var days_booked = days_booked_calc(reserve_data[2]);
-        console.log("days_booked = " + days_booked);
-        reserve_set_num(days_booked, reserve.querySelectorAll(".day"));
-        reserve_enable(reserve);
-    });
-}
-function reserve_enable(reserve) {
-    if (reserve.classList.contains("free")) {
-        reserve.classList.remove("free");
-    }
-    reserve.classList.add("booked");
-}
-/* TODO this function is simple but not correct
-*  possible solution is to refactor all logic to use days only
-*  to avoid every time translation from mseconds to days
-*/
-function days_booked_calc(date_due) {
-    var now_date = new Date();
-    var dayint = 1000*60*60*24;
-    return (date_due - now_date.getTime())/dayint;
-}
+})();

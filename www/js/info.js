@@ -3,20 +3,24 @@
         app = new Object;
     }
     
-    var module = "info";
+    var module = "log";
     if (app.hasOwnProperty(module)) {
         console.log("[ERROR]: '" +module+"' module load error: already loaded");
         return;
     }
-    var Info = new Object;
+    var Log = new Object;
     app[module] = (function() {
         // expose interface
-        Info.error = report_error;
-        return Info;
+        Log.error = report_error;
+        Log.info = report_info;
+        return Log;
     })();
 
     // TODO add user reports
     function report_error(module_name, err_text) {
-        console.log("[ERROR]: '" + module_Name + "': " + err_text);
+        console.log("[ERROR]: '" + module_name + "': " + err_text);
+    }
+    function report_info(module_name, info_text) {
+        console.log("[INFO]: '" + module_name + "': " + info_text);
     }
 })();

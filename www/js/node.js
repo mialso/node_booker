@@ -1,89 +1,87 @@
-function init_nodes() {
-    send_request("GET", "/actions/get_node_element.cgi", node_elem_req_handler);
-}
-// node_elem_request handler
-function node_elem_req_handler(data) {
-    // global object, defined here... UGHHH
-    node_elem = node_elem_create(data);
-    send_request("GET", "/actions/get_nodes.cgi", nodes_req_handler);
-}
-// create node from template
-function node_elem_create(htmlString) {
-    var node = document.createDocumentFragment();
-    var temp = document.createElement('div');
-    temp.insertAdjacentHTML('afterbegin', htmlString);
-    while (temp.firstChild) {
-        node.appendChild(temp.firstChild);
+(function() {
+    if (typeof app == 'undefined') {
+        app = new Object;
     }
-    return node;
-}
-function nodes_req_handler(data) {
-    if (!data) {
+    
+    var module = "node";
+    if (app.hasOwnProperty(module)) {
+        console.log("[ERROR]: '" +module+"' module load error: already loaded");
         return;
     }
-    var nodes = data.split("|");
-    nodes.forEach(function(elem, ind, arr) {
-        node_fill_data(node_elem.firstChild, elem);
-        var new_node = node_elem.cloneNode(true);
-        //new_node.firstChild.querySelector(".edit_button").onclick = reserve_edit;
-        new_node.querySelector(".edit_button").onclick = reserve_edit;
-        new_node.firstChild.mls_node_id = ind;
-        new_node.firstChild.setAttribute("id", ind);
-        days_update(new_node.querySelectorAll(".day"), Date.now());
-        document.body.querySelector(".main").appendChild(new_node);
-    });
-    reserves_get_data();
-}
-function node_fill_data(node, data) {
-    var node_data = data.split(";");
-    // this function is defined in reserve.js
-    node_data.forEach(function(elem, ind, arr) {
-        var class_name = "." + get_class_name(ind) + "_data";
-        node.querySelector(class_name).innerHTML = elem;
-    });
-}
-function get_class_name(index) {
-    switch (index) {
-        case 0:
-            return "name";
-        case 1:
-            return "hardware";
-        case 2:
-            return "boards";
-        case 3:
-            return "description";
+    var Node = new Object;
+    app[module] = (function() {
+        Node.__defineGetter__("glob", function() {
+            return Node_glob;
+        });
+        // expose interface
+        Node.init = init;
+        return Node;
+    })();
+    
+    var Node_glob = {
+        // static data
+        module_name: "node",
+        domel_uri: "/actions/get_node_element.cgi",
+        data_uri: "/actions/get_nodes.cgi",
+        out_splitter: "|",          // in nodes array
+        in_splitter: ";",       // in node data array
+        parent_splitter: "$",
+        //class_names: ["name", "hardware", "boards", "description"],
+    
+        // children data
+        children: [],
+    
+        // parent data
+        parent_container: "",
+    
+        // state data
+        default_state: "view",
+        states: [
+            // children states
+            [
+                // state 1
+                {
+                name: "view",
+                classes: [],
+                actions: {
+                    on_click: undefined,
+                    },
+                },
+                // state 2
+            ],
+        ],
+        module_states: [
+                // module element states
+                // state 1
+                {
+                name: "view",
+                classes: ["node", "border"],
+                actions: {
+                    on_click: undefined,
+                    on_hover: {},
+                    },
+                },
+                //state 2
+                {
+                name: "edit",
+                classes: ["node", "border"],
+                actions: {
+                    on_click: undefined, 
+                    on_hover: {},
+                    },
+                },
+                // state 2
+        ],
+        // handlers
+        data_push: function(domel_proto) {
+            return function(data, ind, arr) {
+                domel_proto.children[ind+1].children[0].innerHTML = data;
+            };
+        },
+        fragment_update: undefined,
+    };
+    // init function, parent_el is for place to attach element[s]
+    function init(parent_el) {
+        Node.ui = new app.ui(Node_glob, parent_el);
     }
-}
-function nodes_req_handler(data) {
-    if (!data) {
-        return;
-    }
-    var nodes = data.split("|");
-    nodes.forEach(function(elem, ind, arr) {
-        node_fill_data(node_elem.firstChild, elem);
-        var new_node = node_elem.cloneNode(true);
-        //new_node.firstChild.querySelector(".edit_button").onclick = reserve_edit;
-        new_node.querySelector(".edit_button").onclick = reserve_edit;
-        new_node.firstChild.mls_node_id = ind;
-        new_node.firstChild.setAttribute("id", ind);
-        days_update(new_node.querySelectorAll(".day"), Date.now());
-        document.body.querySelector(".main").appendChild(new_node);
-    });
-    reserves_get_data();
-}
-function close_node_pop_up() {
-    var node = document.getElementById("pop_up_container").firstChild;
-    // update days to be actionable
-    var days = node.querySelectorAll(".day");
-    for (var i = 0; i < days.length; ++i) {
-        var el = days[i];
-        el.classList.remove("edit");
-        el.onclick = null;
-    }
-    document.getElementById("my_popup").style.display = "none";
-    push_node_to_list(node);
-}
-// rearrange all nodes according to reserve time
-function push_node_to_list(node) {
-    document.body.querySelector(".main").appendChild(node);
-}
+})();
