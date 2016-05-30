@@ -36,16 +36,22 @@
     var User_role = {
         guest: {
             all: false,
+            view: true,
             read: {user: true, reserve: true, node: true},
+            manage: false,
         },
         regular: {
             all: false,
+            view: true,
             read: {user: true, reserve: true, node: true},
+            manage: true,
             create: {reserve: true},
             owner: true
         },
         admin: {
-            all: true
+            all: true,
+            view: true,
+            manage: true,
         },
         // additional role, exclusive for some data-object
         owner: {
@@ -74,7 +80,6 @@
                 name: "view",
                 classes: [],
                 actions: {
-                    on_click: undefined,
                     },
                 },
                 //state 2
@@ -82,7 +87,6 @@
                 name: "edit",
                 classes: [],
                 actions: {
-                    on_click: undefined, 
                     },
                 },
                 // state 2

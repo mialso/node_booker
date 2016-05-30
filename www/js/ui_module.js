@@ -57,7 +57,7 @@
             domels[parent_ind].set_self(domel_proto.cloneNode(true), parent_ind);
             var data_arr = n_data.split(GLOB.in_splitter)
             // TODO move 'data_push' to UI_element
-            data_arr.forEach(GLOB.data_push(domels[parent_ind].frag));
+            domels[parent_ind].data = data_arr;
             domels[parent_ind].state = GLOB.default_state;
         }
         // create UI_elements from data
@@ -126,14 +126,17 @@
             this.__defineGetter__("frag", function() {return self_el;});
     
             this.__defineSetter__("state", function(state_name) {
-                var elem_data = get_elem_data(state_name);
+                var state = get_state_by_name(state_name);
     
-                if (!elem_data) {return;}
+                if (!state) {return;}
     
-                update_classes(elem_data.classes);
-                update_actions(elem_data.actions);
+                update_classes(state.classes);
+                update_actions(state.actions);
                 }
             );
+            this.__defineSetter__("data", function(data_arr) {
+                data_arr.forEach(GLOB.data_push(this.frag));
+            });
         
             function update_classes(classes) {
                 self_el.className = "";
@@ -142,19 +145,21 @@
                 });
             }
     
-            function update_actions(actions) {
-                if (actions.on_click) {
-                    self_el.onclick = actions.on_click(domels[self_ind]);
+            function update_actions(action) {
+                if (!action.element) {
+                    return;
                 }
+                self_el.querySelector("."+action.element)[action.evnt] = action.handler(domels[self_ind]);
+                self_el.querySelector("."+action.element).innerHTML = action.data;
             }
         }
     
-        function get_elem_data (state_name) {
+        function get_state_by_name (state_name) {
             var states = GLOB.module_states;
             for (var  i = 0; i < states.length; i++) {
-                var elem = states[i];
-                if (elem.name == state_name) {
-                    return elem;
+                var state = states[i];
+                if (state .name == state_name) {
+                    return state ;
                 }
             }
             return null;

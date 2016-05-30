@@ -44,7 +44,6 @@
                 name: "view",
                 classes: [],
                 actions: {
-                    on_click: undefined,
                     },
                 },
                 // state 2
@@ -57,8 +56,6 @@
                 name: "view",
                 classes: ["node", "border"],
                 actions: {
-                    on_click: undefined,
-                    on_hover: {},
                     },
                 },
                 //state 2
@@ -66,8 +63,6 @@
                 name: "edit",
                 classes: ["node", "border"],
                 actions: {
-                    on_click: undefined, 
-                    on_hover: {},
                     },
                 },
                 // state 2

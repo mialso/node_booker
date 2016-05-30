@@ -59,11 +59,14 @@
                 children_states: ["view"],
                 classes: ["reserve"],
                 actions: {
-                    on_click: function(domel) {
+                    element: "edit_button",
+                    data: "edit",
+                    evnt: "onclick",
+                    handler: function(domel) {
                         return function(event) {
-                        if (event.target.className == "edit_button") {
-                            domel.state = "edit";
-                        }
+                            if (event.target.className == "edit_button") {
+                                domel.state = "edit";
+                            }
                         };
                         },
                     },
@@ -73,11 +76,14 @@
                 children_states: ["view"],
                 classes: ["reserve", "edit"],
                 actions: {
-                    on_click: function(domel) {
+                    element: "edit_button",
+                    data: "view",
+                    evnt: "onclick",
+                    handler: function(domel) {
                         return function(event) {
-                        if (event.target.className == "edit_button") {
-                            domel.state = "view";
-                        }
+                            if (event.target.className == "edit_button") {
+                                domel.state = "view";
+                            }
                         };
                         },
                     },
