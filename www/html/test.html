@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>init tests</title>
+    <link rel="stylesheet" media="all" href="./lib/test/mocha.css">
+</head>
+<body>
+  <div id="mocha"><p><a href=".">Tests</a></p></div>
+  <div id="messages"></div>
+  <div id="fixtures"></div>
+<!--
+    <script src="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.js"></script>
+-->
+  <script src="./lib/test/mocha.js"></script>
+  <script src="./lib/test/chai.js"></script>
+
+    <script src="/js/info.js"></script>
+    <script src="/js/net.js"></script>
+
+    <script src="/js/ui_module.js"></script>
+    <script src="/js/sync_module.js"></script>
+
+    <script src="/js/node.js"></script>
+    <script src="/js/reserve.js"></script>
+    <script src="/js/user.js"></script>
+
+    <script>
+        mocha.setup('bdd');
+    </script>
+
+    <script src="./js/test/init.js"></script>
+    <script src="./js/test/user.js"></script>
+    <script>
+        mocha.checkLeaks();
+        mocha.run();
+    </script>
+</body>
+</html>

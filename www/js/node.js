@@ -1,7 +1,9 @@
-(function() {
-    if (typeof app == 'undefined') {
-        app = new Object;
+(function(global) {
+    
+    if (typeof global.app == 'undefined') {
+        global.app = new Object;
     }
+    var app = global.app;
     
     var module = "node";
     if (app.hasOwnProperty(module)) {
@@ -23,6 +25,7 @@
         module_name: "node",
         domel_uri: "/actions/get_node_element.cgi",
         data_uri: "/actions/get_nodes.cgi",
+        data: "",
         out_splitter: "|",          // in nodes array
         in_splitter: ";",       // in node data array
         parent_splitter: "$",
@@ -77,6 +80,6 @@
     };
     // init function, parent_el is for place to attach element[s]
     function init(parent_el) {
-        Node.ui = new app.ui(Node_glob, parent_el);
+        Node.ui = new app.ui.instance(Node_glob, parent_el);
     }
-})();
+})(this);

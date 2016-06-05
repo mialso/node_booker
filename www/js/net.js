@@ -1,7 +1,8 @@
-(function() {
-    if (typeof app == 'undefined') {
-        app = new Object;
+(function(global) {
+    if (typeof global.app == 'undefined') {
+        global.app = new Object;
     }
+    var app = global.app;
     
     var module = "net";
     if (app.hasOwnProperty(module)) {
@@ -17,7 +18,7 @@
     // service to handle all requests
     function NET() {
         this.send_request = function (method, uri, handler, data) {
-            var req;
+            var req, error;
             if (window.XMLHttpRequest) {
                 req = new XMLHttpRequest();
             }
@@ -25,29 +26,31 @@
                 req = new ActiveXObject("Microsoft.XMLHTTP");
             }
             if (!req) {
-                report_error("unable to create request to " + uri);
+                error = "unable to create request";
+                app.log.error(module, "send_request(): " + error + " to: " + uri);
+                return;
             }
             req.onreadystatechange = function() {
                 if (req.readyState === XMLHttpRequest.DONE) {
                     if (req.status === 200) {
-                        console.log(uri + " response = " + req.responseText);
+                        app.log.info(module, "req.onreadystatechange(): " + "uri: " + uri + " response: " + req.responseText);
                         handler(req.responseText);
                     } else {
-                        report_error("request receive data error from " + uri);
+                        error = "request receive data error";
+                        app.log.error(module, "req.onreadystatechange(): " + error + " code =" + req.status + " uri: " + uri);
                     }
                 }
             };
             req.open(method, uri);
+            data ? req.send(data) : req.send();
+            /*
             if (data) {
                 req.send(data)
             }
             else {
                 req.send();
             }
+            */
         }
     }
-    // TODO add user reports
-    function report_error(err_text) {
-        console.log("[ERROR]: " + err_text);
-    }
-})();
+})(this);

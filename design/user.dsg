@@ -1,6 +1,11 @@
             user module design doc
         [purpose]:
+    <to help user to>:
 * user object is to provide different functionality to different users
+* log_in(create) user
+* identify(athenticate) user
+* get user role
+* load user_space modules according to role, with authorized user actions
 
         [implementation]:
     [authorization]:
@@ -21,7 +26,10 @@
     - <role>
 <role>
     - role_name
-    - [allowed_actions]
+    - <allowed_actions>
+    [storage representation]:
+file:<user_name>
+    string:<user_email>;<user_role>
 
         [interface]:
 user_add

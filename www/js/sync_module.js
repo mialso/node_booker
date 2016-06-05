@@ -1,7 +1,8 @@
-(function() {
-    if (typeof app == 'undefined') {
-        app = new Object;
+(function(global) {
+    if (typeof global.app == 'undefined') {
+        global.app = new Object;
     }
+    var app = global.app;
     
     var module = "sync";
     if (app.hasOwnProperty(module)) {
@@ -38,4 +39,4 @@
             parent_node = arr[i];
         }
     }
-})();
+})(this);

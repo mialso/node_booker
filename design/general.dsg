@@ -1,10 +1,11 @@
             node_booker design doc
         [purpose]:
-* the app is to help to book node
-* the app is to help to find free node
-* to help find person to contact about node
-* to get notification when a node is freed
-* the app is to help in node management
+    <the app is to help user to>
+* book node
+* find free node
+* contact about node
+* get notification when a node is freed
+* management nodes
 
         [requirements]:
     [functional]:
@@ -56,3 +57,17 @@ reserve_add
     <guest>
 nodes_show
 
+        [flow]:
+load modules
+    load user_space modules
+        user_space modules expose interface to app user(human)
+        
+    load kernel modules
+        kernel modules expose interface to user_space modules
+
+load user data and init user_space user module => user.init
+    get token       // for now it is a user name from local storage
+    send token to server
+    receive user role
+    create user_space user object in role context
+    

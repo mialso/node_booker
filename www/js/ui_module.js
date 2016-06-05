@@ -1,16 +1,18 @@
-(function() {
-    if (typeof app == 'undefined') {
-        app = new Object;
+(function(global) {
+    if (typeof global.app == 'undefined') {
+        global.app = new Object;
     }
-    
+    var app = global.app;
     var module = "ui";
     if (app.hasOwnProperty(module)) {
         console.log("[ERROR]: '" +module+"' module load error: already loaded");
         return;
     }
+    var UI = new Object;
     app[module] = (function() {
         // expose interface
-        return UI_module;
+        UI.instance = UI_module;
+        return UI;
     })();
 
     function UI_module (GLOB, parent_ui) {
@@ -39,6 +41,7 @@
         }
     
         function node_ui_push_data(data, index) {
+            if (!index) index = 0;
             var parent_ind = index;
             var n_data;
             if (!data) {
@@ -63,7 +66,7 @@
         // create UI_elements from data
         function parse_nodes_data(data) {
             if (data.length < 2) {
-                app.log.error(module, "parse_nodes_data(): no data");
+                app.log.error(module, "parse_nodes_data(): no data in " + GLOB.module_name);
                 return;
             }
             data = data.slice(0,-1);
@@ -81,7 +84,12 @@
                 return;
             }
             domel_proto = template_create(data);
-            N.send_request("GET", GLOB.data_uri, parse_nodes_data);
+            if (!GLOB.data && GLOB.data.length == 0)
+                N.send_request("GET", GLOB.data_uri, parse_nodes_data);
+            else {
+                node_ui_push_data(GLOB.data);
+                im_ready();
+            }
         }
         function init() {
             if (!app.user.role.all && !app.user.role.read[GLOB.module_name]) {
@@ -165,4 +173,4 @@
             return null;
         }
     };
-})();
+})(this);

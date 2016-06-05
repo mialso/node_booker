@@ -1,7 +1,8 @@
-(function() {
-    if (typeof app == 'undefined') {
-        app = new Object;
+(function(global) {
+    if (typeof global.app == 'undefined') {
+        global.app = new Object;
     }
+    var app = global.app;
     
     var module = "reserve";
     if (app.hasOwnProperty(module)) {
@@ -22,6 +23,7 @@
         module_name: "reserve",
         domel_uri: "/actions/get_reserve_element.cgi",
         data_uri: "/actions/reserves_get_all.cgi",
+        data: "",
         out_splitter: "|",          // in nodes array
         in_splitter: ";",       // in node data array
         parent_splitter: "$",
@@ -146,6 +148,6 @@
     };
     function init(parent_el) {
         //Reserve.ui = new app.ui.create(Reserve_glob, parent_el);
-        Reserve.ui = new app.ui(Reserve_glob, parent_el);
+        Reserve.ui = new app.ui.instance(Reserve_glob, parent_el);
     }
-})();
+})(this);

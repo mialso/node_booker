@@ -1,7 +1,8 @@
-(function() {
-    if (typeof app == 'undefined') {
-        app = new Object;
+(function(global) {
+    if (typeof global.app == 'undefined') {
+        global.app = new Object;
     }
+    var app = global.app;
     
     var module = "user";
     if (app.hasOwnProperty(module)) {
@@ -13,25 +14,56 @@
         User.__defineGetter__("glob", function() {
             return User_glob;
         });
+        User.__defineSetter__("test_case", function(bool) {
+            counter = bool ? 0 : 1;
+            User.role = undefined;
+            User.ui = undefined;
+        });
         // expose interface
         User.init = init;
-        //User.role = User_role.guest;
         return User;
     })();
 
     var counter = 0;
-    function init() {
+    function init(handler) {
+        var error = false;
         if (counter > 0) {
-            app.log.error(module, "init(): user allready initialized");
+            error = "user already initialized";
+            app.log.error(module, "init(): " + error);
+            handler(error);
             return;
         }
         ++counter;
         // get user credentials
-        User.name = localStorage.getItem("user");   // STUB
-        // get user role
-        User.role = User_role.guest;    // STUB
-        // get user UI
-        User.ui = new app.ui(User_glob);
+        User.name = localStorage.hasOwnProperty("user") ? localStorage.getItem("user") : "";
+        if (!User.name && User.name.length < 1) {
+            error = "unable to get user token from storage";
+            app.log.error(module, "init(): " + error);
+            handler(error);
+            return;
+        }
+        // get user data from server
+        var Net = new app.net.get_instance();
+        Net.send_request("GET", this.glob.data_uri + "?" + User.name, get_user_data_handler);
+        function get_user_data_handler(data) {
+            if (data.length < 3) {
+                error = "no user data received";
+                app.log.error(module, "init(): get_user_handler(): " + error);
+                handler(error);
+                return;
+            }
+            var role_name = data.split(";")[1].slice(0,-1);
+            User.role = User_role[role_name];
+            if (!User.role) {
+                error = "unable to get user role";
+                app.log.error(module, "init(): get_user_handler(): " + error);
+                handler(error);
+                return;
+            }
+            User.glob.data = User.name + ";" + data;
+            User.ui = new app.ui.instance(User_glob);
+            handler();
+        }
     }
     var User_role = {
         guest: {
@@ -64,6 +96,7 @@
         module_name: "user",
         domel_uri: "/actions/get_user_ui.cgi",
         data_uri: "/actions/get_user.cgi",
+        data: "",
         out_splitter: "|",          // in nodes array
         in_splitter: ";",       // in node data array
         parent_splitter: "$",
@@ -97,7 +130,7 @@
                     case 0: element.querySelector(".user_name").innerHTML = data;
                             break;
                     case 1: break;  // email is not used yet
-                    case 2: User.role = User_role[data];
+                    case 2: //User.role = User_role[data];
                             break;
                     default:    app.log.error(module, "data_push(): default case, some data unexpected");
                             break;
@@ -106,4 +139,4 @@
         },
         fragment_update: undefined,
     }
-})();
+})(this);

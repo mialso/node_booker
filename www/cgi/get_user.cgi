@@ -4,22 +4,17 @@ echo "Content-type: text/html"
 echo ""
 
 declare result
+declare user_name
 data_path='../../data/users/'
-split="|"
 
-# read all data to variable, and split each node
-for node in $(ls "$data_path");do
-
-    # read node data
-    data=$(cat "$data_path$node")
-
-    # append node data + splitter to result
-    result="$result$node;$data$split"
-done
-
-# remove last 'split' to avoid empty object
-if [ -n "$result" ];then
-    echo "${result:0: -1}"
+# get user name from request
+user_name=$QUERY_STRING
+# read user data to variable
+result=$(cat "$data_path$user_name")
+if [ "$?" -eq "0" ]; then
+    echo "$result"
+else
+    echo ""
 fi
 
 exit 0

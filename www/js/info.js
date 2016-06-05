@@ -1,7 +1,8 @@
-(function() {
-    if (typeof app == 'undefined') {
-        app = new Object;
+(function(global) {
+    if (typeof global.app == 'undefined') {
+        global.app = new Object;
     }
+    var app = global.app;
     
     var module = "log";
     if (app.hasOwnProperty(module)) {
@@ -23,4 +24,4 @@
     function report_info(module_name, info_text) {
         console.log("[INFO]: '" + module_name + "': " + info_text);
     }
-})();
+})(this);

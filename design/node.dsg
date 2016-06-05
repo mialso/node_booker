@@ -1,0 +1,18 @@
+            node design spec
+        [purpose]:
+    <to help user to>:
+* get all nodes data
+* get exact node data
+* update node data
+* delete node
+
+
+        [data model]:
+<reserve>
+name
+hardware
+boards
+description
+    [storage representation]:
+file:<node_id>      // node_id is a number, starting with 0
+    string:<name>;<hardware>;<boards>;<description>
