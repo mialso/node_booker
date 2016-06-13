@@ -2,5 +2,6 @@
 	"modules": {
 		"kernel": ["user", "net", "sync", "ui"],
 		"shell": ["user", "node", "reserve"]
-    }
+    },
+    
 }

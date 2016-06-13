@@ -1,0 +1,48 @@
+        test conception and module design doc
+    concept:
+        [container testing]:
+    // container tests on app load
+    // one possibility is to meet the initialized object, with exact name as mine app
+    // once per container... or every load?
+        [ring buffer]:
+    // create ring buffer to collect and send error logs to server
+    [load]
+// that one would collect all errors during load phase
+// the buffer would be sent as load tests pass
+    [
+
+
+    module:
+        [purpose]:
+to help user to 
+* test himself
+* test interfaces
+* test load status
+* test static data correctness
+* load models
+* create random values, using correct and error ranges
+* test handlers
+* test states
+* test performance
+    [metaphor]:
+the metaphor for this module is human brain. 
+abilities:
+    imagination     - to create mock data
+    analitics       - to compare and make decision
+    nervous system  - to collect data from every 'body' part
+
+        [actions]:
+test
+    init test
+        create test case
+            create models
+                model_ready
+            create mocks
+                mock_ready
+            test_case_ready
+        create stubs
+            stubs_ready
+        test_ready
+    perform test
+    create result
+    output result

@@ -1,16 +1,20 @@
 (function(global) {
-    if (typeof global.app == 'undefined') {
+    if (typeof global.app === 'undefined') {
         global.app = new Object;
     }
     var app = global.app;
     
-    var module = "user";
-    if (app.hasOwnProperty(module)) {
-        console.log("[ERROR]: '" + module + "' module load error: already loaded");
+    //var module_name = User_glob.module_name;
+    var S = new Object;
+    S.module_name = "user";
+    if (app.hasOwnProperty("user")) {
+        // TODO remove this to error ringbuffer
+        /* TODO this is container error, i need to create container test before loading modules... however, this is really impossible - if app is created by me... the one possibility is to load script twice */
+        //console.log("[ERROR]: '" + imodule_name + "' module load error: already loaded");
         return;
     }
     var User = new Object;
-    app[module] = (function() {
+    app.user = (function() {
         User.__defineGetter__("glob", function() {
             return User_glob;
         });
@@ -29,7 +33,7 @@
         var error = false;
         if (counter > 0) {
             error = "user already initialized";
-            app.log.error(module, "init(): " + error);
+            app.log.error(S.module_name, "init(): " + error);
             handler(error);
             return;
         }
@@ -38,7 +42,7 @@
         User.name = localStorage.hasOwnProperty("user") ? localStorage.getItem("user") : "";
         if (!User.name && User.name.length < 1) {
             error = "unable to get user token from storage";
-            app.log.error(module, "init(): " + error);
+            app.log.error(S.module_name, "init(): " + error);
             handler(error);
             return;
         }
@@ -48,7 +52,7 @@
         function get_user_data_handler(data) {
             if (data.length < 3) {
                 error = "no user data received";
-                app.log.error(module, "init(): get_user_handler(): " + error);
+                app.log.error(S.module_name, "init(): get_user_handler(): " + error);
                 handler(error);
                 return;
             }
@@ -56,7 +60,7 @@
             User.role = User_role[role_name];
             if (!User.role) {
                 error = "unable to get user role";
-                app.log.error(module, "init(): get_user_handler(): " + error);
+                app.log.error(S.module_name, "init(): get_user_handler(): " + error);
                 handler(error);
                 return;
             }
@@ -132,7 +136,7 @@
                     case 1: break;  // email is not used yet
                     case 2: //User.role = User_role[data];
                             break;
-                    default:    app.log.error(module, "data_push(): default case, some data unexpected");
+                    default:    app.log.error(S.module_name, "data_push(): default case, some data unexpected");
                             break;
                 }
             }
