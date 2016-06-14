@@ -12,15 +12,41 @@
     var kernel_worker = new Worker("js/event/kernel.js");
     // object to hold all ui_module objects interfaces
     var UI_modules = new Object;
+    var Mock = new Object;
     // kernel interface
     Kernel.new_ev = function(module_name, action_name, data) {
         kernel_worker.postMessage([module_name, action_name, data]);
+        if (!Mock.hasOwnProperty(module_name)) {
+            // no such case, error?
+            return;
+        }
+        if (!Mock[module_name].hasOwnProperty(action_name)) {
+            return;
+        }
+        Mock[module_name][action_name] = data;
     }
     Kernel.create_handler = function(module_name, proc_name, proc) {
         if (!UI_modules[module_name]) {
             UI_modules[module_name] = new Object;
         }
         UI_modules[module_name][proc_name] = proc;
+    }
+    Kernel.create_mock = function(module_name, action_name) {
+        Mock[module_name] = new Object;
+        Mock[module_name][action_name] = null;
+    }
+    Kernel.remove_mock = function(module_name, action_name) {
+        delete Mock[module_name][action_name];
+    }
+    Kernel.get_mock_data = function(module_name, action_name) {
+        if (!Mock.hasOwnProperty(module_name)) {
+            // no such case, error?
+            return;
+        }
+        if (!Mock[module_name].hasOwnProperty(action_name)) {
+            return;
+        }
+        return Mock[module_name][action_name];
     }
     kernel_worker.onmessage = function(e) {
         //console.log(e.data[0] + ":" + e.data[1] + "| user space message: " + e.data[2]);

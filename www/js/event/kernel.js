@@ -1,7 +1,6 @@
 var mls_kernel = new Object;
 var err = "[ERROR]: <kernel>: ";
 onmessage = function(e) {
-    console.log("event received by kernel");
     if (!mls_kernel.hasOwnProperty(e.data[0])) {
         console.log(err + "no such module: " + e.data[0]);
         return;
@@ -11,9 +10,9 @@ onmessage = function(e) {
         return;
     }
     mls_kernel[e.data[0]][e.data[1]](e.data[2]);
-    postMessage(e.data);
+    //postMessage(e.data);
 }
-importScripts("log.js");
+importScripts("log.js", "user.js");
 onerror = function(e) {
     console.log(err + e.message + " at: " + e.filename + ">line=" + e.lineno);
 }

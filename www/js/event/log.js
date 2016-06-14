@@ -15,4 +15,4 @@
         }   
         Log.error(arr[0], arr[1], arr[2]);
     }
-})(mls_kernel);
+})(this.mls_kernel);
